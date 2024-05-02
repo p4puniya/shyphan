@@ -1,28 +1,20 @@
 import React from 'react';
-import { BrowserRouter as Router, Route,Navigate, Link, Routes } from 'react-router-dom';
-import LoginPage from './LoginPage.js';
-import './styles.css';
+import { 
+  BrowserRouter as 
+  Router, Route,Navigate, Routes 
+} from 'react-router-dom';
+import LoginPage from './components/loginPage/LoginPage.js';
+import NavigationPage from './components/navigationPage/NavigationPage.js';
 
 function App() {
-  
   return (
-    <div className="App">
     <Router> 
-      
-        <div class= "login_board">          
-          <div class="login_title">SHYPHAN</div>
           <Routes>
-          <Route path="/" element={<Navigate to="/login" />} />
-          
-          <Route path="/login" element={<LoginPage/>} />
-          
+            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/navigation-page" element={<NavigationPage />} />
           </Routes>
-            <div class="buttons">        
-                  <div><Link to="/login">Login With Google</Link></div>
-            </div>
-        </div>
     </Router>
-    </div>
   );
 }
 
