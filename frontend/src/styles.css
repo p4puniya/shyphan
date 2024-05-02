@@ -1,0 +1,89 @@
+body{
+    /* background-color: #0056b3; */
+    font-family: 'Inter Display', sans-serif;
+    background-image: url(login_background.svg) ;
+    background-repeat: no-repeat;
+    margin: 60px;
+    background-blend-mode: color;
+    background-position-x: left;
+    background-size: 76%;
+}
+.login_board{
+    width: 25%;
+    margin: 12% 68%;
+    background-color: #ffffff;
+    border: 1px solid rgb(216, 216, 216);
+    border-radius: 10px;
+    padding: 10px;
+}
+.login_title{
+    background: linear-gradient(0deg, 
+    #052447 20%, rgba(243, 151, 32, 0) 45%),
+    linear-gradient(90deg, #2a4e7a 0%, #3d92ee 33.333%, #ffffff 50%, #4e96c0 100%);
+    background-size: 300% 100%;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: flex;
+    font-size: 50px;
+    flex-direction: column;
+    align-items: center;
+}
+.buttons {
+    width: 100%; /* Adjust width as needed */
+    display: flex;
+}
+  
+.buttons > div {
+    flex: 1; /* Each button takes up equal space */
+    margin: 10px;
+}
+  
+  .buttons > div a {
+    display: block;
+    padding: 10px 0;
+    background-color: #007bff; /* Blue color */
+    color: #fff; /* White text */
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .buttons > div a:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+.login-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  button {
+    width: 70%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #cacaca;
+    border-radius: 5px;
+  }
+  
+  button {
+    background-color: #007bff;
+    color: white;
+    width: 77%;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  p {
+    color: red;
+  }
+  
