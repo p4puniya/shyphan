@@ -2,6 +2,8 @@
 Creating an SRM
 
 ## Techstack Used:
+### FrontEnd
+- Ant-D
 - React 
 - Axios: For making Requests to backend
 - react-router-dom: for handling routing in the React App
