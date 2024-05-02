@@ -1,0 +1,59 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    font-family: 'Inter Display', sans-serif;
+    margin: 0px;
+}
+.login_board{
+    
+  margin: 60% auto;
+}
+.login_title{
+    background: linear-gradient(0deg, 
+    #052447 20%, rgba(243, 151, 32, 0) 45%),
+    linear-gradient(90deg, #2a4e7a 0%, #3d92ee 33.333%, #ffffff 50%, #4e96c0 100%);
+    background-size: 300% 100%;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: flex;
+    font-size: 50px;
+    flex-direction: column;
+    align-items: center;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+.input{
+    width: 77%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #cacaca;
+    border-radius: 5px;
+
+}
+.login-button {
+    width: 70%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #cacaca;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    width: 77%;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background-color: #0056b3;
+  }
+  
+.error-text{
+    color: red;
+  }
+  
