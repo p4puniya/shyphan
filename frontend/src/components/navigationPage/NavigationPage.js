@@ -12,19 +12,38 @@ import {
   FileSearchOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 import { Button, Layout, Menu, theme, Switch } from 'antd';
+import './Navigation.css';
+
 const { Header, Sider, Content } = Layout;
+
 
 const NavigationPage = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [darkMode, setDarkMode] = useState(true); // State for dark mode
+  const navigate = useNavigate();
+  
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  const onClick = (e) => {
-    console.log('click ', e);
+  // const onClick = (e) => {
+  //   console.log('click ', e);
+  // };
+  const handleLogout = () => {
+    localStorage.removeItem('token'); // Remove token from localStorage
+    navigate('/login'); // Redirect to login page
   };
+  const onClick = ({ key }) => {
+    if (key === '9') { // If Logout option is selected
+      handleLogout();
+    } else {
+      // Handle other menu options if needed
+    }
+  };
+
+  
 
   const toggleTheme = () => {
     setDarkMode(!darkMode); // Toggle the theme
