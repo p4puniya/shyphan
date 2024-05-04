@@ -62,7 +62,19 @@ const NavigationPage = () => {
         {
           key: '2',
           icon: <AppstoreOutlined />,
-          label: 'Category',
+          label: 'Property',
+          children:[
+            {
+              key: '2.1',
+              icon: <SolutionOutlined />,
+              label: 'Private',
+            },
+            {
+              key: '2.2',
+              icon: <BookOutlined />,
+              label: 'Public',
+            },
+          ]
         },
       ],
     },

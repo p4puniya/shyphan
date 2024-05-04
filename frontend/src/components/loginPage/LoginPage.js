@@ -2,7 +2,6 @@ import React,{useState} from 'react';
 import { useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import { Layout } from 'antd';
-import loginBackground from './login_background.svg'; // Import the image
 import './LoginPage.css';
 
 const { Sider, Content } = Layout;
@@ -11,19 +10,6 @@ const layoutStyle = {
   borderRadius: 8,
   height: '100vh',
   width: '100%',
-};
-const contentStyle = {
-  textAlign: 'center',
-  lineHeight: '120px',
-  height: '100%',
-  backgroundColor: 'white',
-  backgroundImage: `url(${loginBackground})`, // Use the imported image
-};
-const siderStyle = {
-  textAlign: 'center',
-  lineHeight: '40px',
-  color: 'black',
-  backgroundColor: 'white',
 };
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -44,7 +30,7 @@ const LoginPage = () => {
   };
   return (
     <Layout style={layoutStyle}>
-      <Sider width="25%" style={siderStyle}>
+      <Sider class="sider" width= '25%'>
         <div class= "login_board">
         <div class="login_title">SHYPHAN</div>
         <div class="login-page">
@@ -58,7 +44,7 @@ const LoginPage = () => {
         </div>
       </Sider>
       <Layout>
-        <Content style={contentStyle}></Content>
+        <Content class="content"></Content>
       </Layout>
     </Layout>
   );

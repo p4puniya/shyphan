@@ -3,3 +3,27 @@ body{
     font-family: 'Inter Display', sans-serif;
     margin: 0px;
 }
+@media screen and (max-width: 768px) {
+    .dashboard {
+      display: none; /* Hide the dashboard content on smaller screens */
+    }
+  
+    .logo {
+      display: none; /* Hide the logo on smaller screens if it's present */
+    }
+  
+    .siderStyle {
+      width: 100%; /* Make the sidebar take full width on smaller screens */
+    }
+  
+    .menuText {
+      display: none; /* Hide menu item text on smaller screens */
+    }
+  }
+  
+  @media screen and (max-width: 576px) {
+    .menuIcon {
+      font-size: 20px; /* Decrease the font size of menu icons for smaller screens */
+    }
+  }
+  
