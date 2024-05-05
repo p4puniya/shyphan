@@ -12,6 +12,7 @@ import {
   FileSearchOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 import { Button, Layout, Menu, theme, Switch } from 'antd';
 import { Navigate } from 'react-router-dom'; // Import Redirect from react-router-dom
 //Importing Pages
@@ -26,6 +27,7 @@ import StaffMember from '../userManagement/StaffMember';
 
 const { Header, Sider, Content } = Layout;
 
+
 const NavigationPage = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
@@ -36,9 +38,22 @@ const NavigationPage = () => {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
+  const handleLogout = () => {
+    localStorage.removeItem('token'); // Remove token from localStorage
+    navigate('/login'); // Redirect to login
   const toggleTheme = () => {
     setDarkMode(!darkMode);
+
   };
+  const onClick = ({ key }) => {
+    if (key === '9') { // If Logout option is selected
+      handleLogout();
+    } else {
+      // Handle other menu options if needed
+    }
+  };
+
+  
 
   const handleLogout = () => {
     setLoggedIn(false); // Update login status to false
@@ -58,8 +73,19 @@ const NavigationPage = () => {
         {
           key: '2',
           icon: <AppstoreOutlined />,
-          label: 'Category',
-          component: () => <Properties />,
+          label: 'Property',
+          children:[
+            {
+              key: '2.1',
+              icon: <SolutionOutlined />,
+              label: 'Private',
+            },
+            {
+              key: '2.2',
+              icon: <BookOutlined />,
+              label: 'Public',
+            },
+          ]
         },
       ],
     },
