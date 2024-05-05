@@ -33,7 +33,7 @@ const NavigationPage = () => {
   const [loggedIn, setLoggedIn] = useState(true); // State to manage login status
 
   const {
-    token: { colorBgContainer, borderRadiusLG },
+    token: { colorBgContainer},
   } = theme.useToken();
 
   const toggleTheme = () => {
@@ -58,8 +58,22 @@ const NavigationPage = () => {
         {
           key: '2',
           icon: <AppstoreOutlined />,
-          label: 'Category',
           component: () => <Properties />,
+          label: 'Properties',
+          children: [
+            {
+              key: '2.1',
+              icon: <HomeOutlined />,
+              label: 'Dashboard',
+              component: () => <Dashboard />,
+            },
+            {
+              key: '2.2',
+              icon: <AppstoreOutlined />,
+              label: 'Category',
+              component: () => <Properties />,
+            },
+          ],
         },
       ],
     },
@@ -207,7 +221,6 @@ const NavigationPage = () => {
             margin: '0px 0px 0px 1px',
             padding: 24,
             minHeight: 280,
-            background: colorBgContainer,
           }}
         >
           {items.map((group) =>
