@@ -1,66 +1,41 @@
 import React, { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { Table, Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space } from 'antd';
+import { Table, Button, Col, Drawer, Form, Input, Row, Select, Space } from 'antd';
+
 const { Option } = Select;
+
 const App = () => {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState([]); // State to store form data
   const [form] = Form.useForm(); // Initialize form instance
+  const [columns, setColumns] = useState([]); // State to store table columns
 
   const showDrawer = () => {
     setOpen(true);
   };
+
   const onClose = () => {
     setOpen(false);
+    form.resetFields(); 
   };
 
   const handleSubmit = (values) => {
     // Capture form data and store it in formData state
     const formattedValues = {
       ...values,
-      dateTime: values.dateTime.map(date => date.format('YYYY-MM-DD HH:mm:ss'))
+      dateTime: values.dateTime ? values.dateTime.map(date => date.format('YYYY-MM-DD HH:mm:ss')) : null
     };
     setFormData([...formData, formattedValues]);
     onClose(); // Close the drawer after form submission
-  };
 
-  const columns = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: 'Url',
-      dataIndex: 'url',
-      key: 'url',
-    },
-    {
-      title: 'Owner',
-      dataIndex: 'owner',
-      key: 'owner',
-    },
-    {
-      title: 'Type',
-      dataIndex: 'type',
-      key: 'type',
-    },
-    {
-      title: 'Approver',
-      dataIndex: 'approver',
-      key: 'approver',
-    },
-    {
-      title: 'DateTime',
-      dataIndex: 'dateTime',
-      key: 'dateTime',
-    },
-    {
-      title: 'Description',
-      dataIndex: 'description',
-      key: 'description',
-    },
-  ];
+    // Generate columns based on the keys of the submitted values
+    const newColumns = Object.keys(values).map(key => ({
+      title: key.charAt(0).toUpperCase() + key.slice(1), // Capitalize the first letter of each key
+      dataIndex: key,
+      key: key
+    }));
+    setColumns(newColumns);
+  };
 
   return (
     <>
@@ -95,21 +70,21 @@ const App = () => {
                 rules={[
                   {
                     required: true,
-                    message: 'Please enter user name',
+                    message: 'Please enter user\'s name',
                   },
                 ]}
               >
-                <Input placeholder="Please enter user name" />
+                <Input placeholder="Please enter user's name" />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                name="url"
-                label="Url"
+                name="phoneNumber"
+                label="PhoneNumber"
                 rules={[
                   {
                     required: true,
-                    message: 'Please enter url',
+                    message: 'Please enter user\'s phone number',
                   },
                 ]}
               >
@@ -117,9 +92,8 @@ const App = () => {
                   style={{
                     width: '100%',
                   }}
-                  addonBefore="http://"
-                  addonAfter=".com"
-                  placeholder="Please enter url"
+                  addonBefore="+91"
+                  placeholder="Please enter user's phone number"
                 />
               </Form.Item>
             </Col>
@@ -127,35 +101,31 @@ const App = () => {
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
-                name="owner"
-                label="Owner"
+                name="role"
+                label="Role"
                 rules={[
                   {
                     required: true,
-                    message: 'Please select an owner',
+                    message: 'Select Role',
                   },
                 ]}
               >
-                <Select placeholder="Please select an owner">
-                  <Option value="xiao">Xiaoxiao Fu</Option>
-                  <Option value="mao">Maomao Zhou</Option>
+                <Select placeholder="Select Role">
+                  <Option value="admin">Admin</Option>
+                  <Option value="manager">Manager</Option>
+                  <Option value="teamMember">Team Member</Option>
                 </Select>
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                name="type"
-                label="Type"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please choose the type',
-                  },
-                ]}
+                name="status"
+                label="Status"
+                initialValue={"enabled"}
               >
-                <Select placeholder="Please choose the type">
-                  <Option value="private">Private</Option>
-                  <Option value="public">Public</Option>
+                <Select placeholder="Please choose the type" defaultValue= "enabled">
+                  <Option value="enabled">Enabled</Option>
+                  <Option value="disabled">Disabled</Option>
                 </Select>
               </Form.Item>
             </Col>
@@ -163,37 +133,34 @@ const App = () => {
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
-                name="approver"
-                label="Approver"
+                name="password"
+                label="Password"
                 rules={[
                   {
                     required: true,
-                    message: 'Please choose the approver',
+                    message: 'Please enter user\'s password',
                   },
                 ]}
               >
-                <Select placeholder="Please choose the approver">
-                  <Option value="jack">Jack Ma</Option>
-                  <Option value="tom">Tom Liu</Option>
-                </Select>
+                <Input placeholder="Please enter user's password" />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                name="dateTime"
-                label="DateTime"
+                name="email"
+                label="Email"
                 rules={[
                   {
                     required: true,
-                    message: 'Please choose the dateTime',
+                    message: 'Please enter user\'s email',
                   },
                 ]}
               >
-                <DatePicker.RangePicker
+                <Input
                   style={{
                     width: '100%',
                   }}
-                  getPopupContainer={(trigger) => trigger.parentElement}
+                  placeholder="Please enter user's email"
                 />
               </Form.Item>
             </Col>
@@ -201,16 +168,16 @@ const App = () => {
           <Row gutter={16}>
             <Col span={24}>
               <Form.Item
-                name="description"
-                label="Description"
+                name="address"
+                label="Address"
                 rules={[
                   {
                     required: true,
-                    message: 'please enter url description',
+                    message: 'please enter user\'s address',
                   },
                 ]}
               >
-                <Input.TextArea rows={4} placeholder="please enter url description" />
+                <Input.TextArea rows={4} placeholder="please enter user's address" />
               </Form.Item>
             </Col>
           </Row>
@@ -224,4 +191,5 @@ const App = () => {
     </>
   );
 };
+
 export default App;
