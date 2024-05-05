@@ -1,15 +1,67 @@
 import React, { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space } from 'antd';
+import { Table, Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space } from 'antd';
 const { Option } = Select;
 const App = () => {
   const [open, setOpen] = useState(false);
+  const [formData, setFormData] = useState([]); // State to store form data
+  const [form] = Form.useForm(); // Initialize form instance
+
   const showDrawer = () => {
     setOpen(true);
   };
   const onClose = () => {
     setOpen(false);
   };
+
+  const handleSubmit = (values) => {
+    // Capture form data and store it in formData state
+    const formattedValues = {
+      ...values,
+      dateTime: values.dateTime.map(date => date.format('YYYY-MM-DD HH:mm:ss'))
+    };
+    setFormData([...formData, formattedValues]);
+    onClose(); // Close the drawer after form submission
+  };
+
+  const columns = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Url',
+      dataIndex: 'url',
+      key: 'url',
+    },
+    {
+      title: 'Owner',
+      dataIndex: 'owner',
+      key: 'owner',
+    },
+    {
+      title: 'Type',
+      dataIndex: 'type',
+      key: 'type',
+    },
+    {
+      title: 'Approver',
+      dataIndex: 'approver',
+      key: 'approver',
+    },
+    {
+      title: 'DateTime',
+      dataIndex: 'dateTime',
+      key: 'dateTime',
+    },
+    {
+      title: 'Description',
+      dataIndex: 'description',
+      key: 'description',
+    },
+  ];
+
   return (
     <>
       <Button type="primary" onClick={showDrawer} icon={<PlusOutlined />}>
@@ -28,13 +80,13 @@ const App = () => {
         extra={
           <Space>
             <Button onClick={onClose}>Cancel</Button>
-            <Button onClick={onClose} type="primary">
+            <Button onClick={() => form.submit()} type="primary">
               Submit
             </Button>
           </Space>
         }
       >
-        <Form layout="vertical" hideRequiredMark>
+        <Form form={form} layout="vertical" hideRequiredMark onFinish={handleSubmit}>
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
@@ -164,6 +216,11 @@ const App = () => {
           </Row>
         </Form>
       </Drawer>
+      
+      <div>
+        <h2>Staff Manager</h2>
+        <Table dataSource={formData} columns={columns} /> {/* Display data in a table */}
+      </div>
     </>
   );
 };
