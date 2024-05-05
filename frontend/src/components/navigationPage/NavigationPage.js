@@ -13,21 +13,29 @@ import {
   LogoutOutlined,
 } from '@ant-design/icons';
 import { Button, Layout, Menu, theme, Switch } from 'antd';
+//Importing Pages
+import Dashboard from '../dashboard/Dashboard';
+import StaffManager from '../userManagement/StaffManager';
+import Properties from '../propertiesPage/Properties';
+import LeadCall from '../leadManagement/LeadCall';
+import LeadFollowUp from '../leadManagement/LeadFollowUp';
+import CallManager from '../leadManagement/CallManager';
+import Settings from '../settings/Settings';
+import StaffMember from '../userManagement/StaffMember';
+
 const { Header, Sider, Content } = Layout;
 
 const NavigationPage = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const [darkMode, setDarkMode] = useState(true); // State for dark mode
+  const [darkMode, setDarkMode] = useState(true);
+  const [selectedMenuItem, setSelectedMenuItem] = useState('Dashboard');
+
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  const onClick = (e) => {
-    console.log('click ', e);
-  };
-
   const toggleTheme = () => {
-    setDarkMode(!darkMode); // Toggle the theme
+    setDarkMode(!darkMode);
   };
 
   const items = [
@@ -39,11 +47,13 @@ const NavigationPage = () => {
           key: '1',
           icon: <HomeOutlined />,
           label: 'Dashboard',
+          component: () => <Dashboard />,
         },
         {
           key: '2',
           icon: <AppstoreOutlined />,
           label: 'Category',
+          component: () => <Properties />,
         },
       ],
     },
@@ -56,11 +66,13 @@ const NavigationPage = () => {
           key: '3',
           icon: <SolutionOutlined />,
           label: 'Staff Member',
+          component: () => <StaffMember />,
         },
         {
           key: '4',
           icon: <BookOutlined />,
           label: 'Staff Manager',
+          component: () => <StaffManager />,
         },
       ],
     },
@@ -73,16 +85,19 @@ const NavigationPage = () => {
           key: '5',
           icon: <UserOutlined />,
           label: 'Call Manager',
+          component: () => <CallManager />,
         },
         {
           key: '6',
           icon: <PhoneOutlined />,
           label: 'Lead Call',
+          component: () => <LeadCall />,
         },
         {
           key: '7',
           icon: <FileSearchOutlined />,
           label: 'Lead Follow-Up',
+          component: () => <LeadFollowUp />,
         },
       ],
     },
@@ -95,6 +110,7 @@ const NavigationPage = () => {
           key: '8',
           icon: <SettingOutlined />,
           label: 'Settings',
+          component: () => <Settings />,
         },
         {
           key: '9',
@@ -109,33 +125,44 @@ const NavigationPage = () => {
     borderRadius: 8,
     height: '100vh',
     width: '100%',
-    background: darkMode ? '#111111' : '#f0f2f5', // Dynamic background color based on darkMode state
+    background: darkMode ? '#111111' : '#f0f2f5',
   };
 
   const siderStyle = {
     textAlign: 'center',
     lineHeight: '50px',
     color: darkMode ? 'white' : '#121212',
-    background: darkMode ? '#001529' : 'white', // Dynamic text color based on darkMode state
+    background: darkMode ? '#001529' : 'white',
     fontWeight: 'bold', 
     SizeContext: 'large',
+  };
+
+  const handleMenuItemClick = (label) => {
+    setSelectedMenuItem(label); // Set the selected menu item label
   };
 
   return (
     <Layout style={layoutStyle}>
       <Sider trigger={null} collapsible collapsed={collapsed} style={siderStyle}>
-        <div class="dashboard" />
+        <div className="dashboard" />
         {!collapsed && <div>SHYPHAN LOGO</div>}
         <Menu
-          theme={darkMode ? 'dark' : 'light'} // Toggle theme based on darkMode state
-          // style={{color: darkMode ? 'white' : '#121212'}}
-          onClick={onClick}
+          theme={darkMode ? 'dark' : 'light'}
           defaultSelectedKeys={['1']}
           inlineCollapsed={collapsed}
           defaultOpenKeys={['sub1']}
           mode="inline"
-          items={items}
-        />
+        >
+          {items.map((group) => (
+            <Menu.ItemGroup key={group.key} title={group.label}>
+              {group.children.map((item) => (
+                <Menu.Item key={item.key} icon={item.icon} onClick={() => handleMenuItemClick(item.label)}>
+                  <span>{item.label}</span>
+                </Menu.Item>
+              ))}
+            </Menu.ItemGroup>
+          ))}
+        </Menu>
       </Sider>
       <Layout>
         <Header
@@ -156,7 +183,7 @@ const NavigationPage = () => {
               height: 64,
             }}
           />
-          <Switch  checked={darkMode} onChange={toggleTheme} style={{ marginLeft: '1rem' }} /> {/* Add Switch component */}
+          <Switch  checked={darkMode} onChange={toggleTheme} style={{ marginLeft: '1rem' }} />
         </Header>
         <Content
           style={{
@@ -167,7 +194,11 @@ const NavigationPage = () => {
             borderRadius: borderRadiusLG,
           }}
         >
-          Content
+          {items.map((group) =>
+            group.children.map((item) =>
+              item.label === selectedMenuItem ? <item.component key={item.key} /> : null
+            )
+          )}
         </Content>
       </Layout>
     </Layout>
