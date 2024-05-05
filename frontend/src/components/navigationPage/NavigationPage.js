@@ -25,12 +25,13 @@ import Settings from '../settings/Settings';
 import StaffMember from '../userManagement/StaffMember';
 
 const { Header, Sider, Content } = Layout;
+const { SubMenu } = Menu;
 
 const NavigationPage = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
-  const [selectedMenuItem, setSelectedMenuItem] = useState('Dashboard');
-  const [loggedIn, setLoggedIn] = useState(true); // State to manage login status
+  const [selectedMenuItemKey, setSelectedMenuItem] = useState('1'); 
+  const [loggedIn, setLoggedIn] = useState(true);
 
   const {
     token: { colorBgContainer},
@@ -41,104 +42,77 @@ const NavigationPage = () => {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem('token'); // Remove token from local storage
     setLoggedIn(false); // Update login status to false
   };
 
-  const items = [
+
+  const menuItems = [
     {
-      key: 'Group 1',
-      type: 'group',
+      key: '1',
+      icon: <HomeOutlined />,
+      label: 'Dashboard',
+      component: <Dashboard />,
+    },
+    {
+      key: '2',
+      icon: <AppstoreOutlined />,
+      label: 'Properties',
       children: [
         {
-          key: '1',
-          icon: <HomeOutlined />,
+          key: '2.1',
           label: 'Dashboard',
-          component: () => <Dashboard />,
+          component: <Dashboard />,
         },
         {
-          key: '2',
-          icon: <AppstoreOutlined />,
-          component: () => <Properties />,
-          label: 'Properties',
-          children: [
-            {
-              key: '2.1',
-              icon: <HomeOutlined />,
-              label: 'Dashboard',
-              component: () => <Dashboard />,
-            },
-            {
-              key: '2.2',
-              icon: <AppstoreOutlined />,
-              label: 'Category',
-              component: () => <Properties />,
-            },
-          ],
+          key: '2.2',
+          label: 'Category',
+          component: <Properties />,
         },
       ],
     },
+    
     {
-      key: 'Group 2',
-      label: !collapsed && 'User Management',
-      type: 'group',
-      children: [
-        {
-          key: '3',
-          icon: <SolutionOutlined />,
-          label: 'Staff Member',
-          component: () => <StaffMember />,
-        },
-        {
-          key: '4',
-          icon: <BookOutlined />,
-          label: 'Staff Manager',
-          component: () => <StaffManager />,
-        },
-      ],
+      key: '3',
+      icon: <SolutionOutlined />,
+      label: 'Staff Member',
+      component: <StaffMember />,
     },
     {
-      key: 'Group 3',
-      label: !collapsed && 'Lead Management',
-      type: 'group',
-      children: [
-        {
-          key: '5',
-          icon: <UserOutlined />,
-          label: 'Call Manager',
-          component: () => <CallManager />,
-        },
-        {
-          key: '6',
-          icon: <PhoneOutlined />,
-          label: 'Lead Call',
-          component: () => <LeadCall />,
-        },
-        {
-          key: '7',
-          icon: <FileSearchOutlined />,
-          label: 'Lead Follow-Up',
-          component: () => <LeadFollowUp />,
-        },
-      ],
+      key: '4',
+      icon: <BookOutlined />,
+      label: 'Staff Manager',
+      component: <StaffManager />,
     },
     {
-      key: 'Group 4',
-      label: !collapsed && 'Settings',
-      type: 'group',
-      children: [
-        {
-          key: '8',
-          icon: <SettingOutlined />,
-          label: 'Settings',
-          component: () => <Settings />,
-        },
-        {
-          key: '9',
-          icon: <LogoutOutlined />,
-          label: 'Logout',
-          onClick: handleLogout, // Add onClick handler for Logout
-        },
-      ],
+      key: '5',
+      icon: <UserOutlined />,
+      label: 'Call Manager',
+      component: <CallManager />,
+    },
+    {
+      key: '6',
+      icon: <PhoneOutlined />,
+      label: 'Lead Call',
+      component: <LeadCall />,
+    },
+    {
+      key: '7',
+      icon: <FileSearchOutlined />,
+      label: 'Lead Follow-Up',
+      component: <LeadFollowUp />,
+    },
+    {
+      key: '8.1',
+      icon: <SettingOutlined />,
+      label: 'Settings',
+      component: <Settings />,
+    },
+    {
+      key: '8.2',
+      icon: <LogoutOutlined />,
+      label: 'Logout',
+      onClick: handleLogout,
     },
   ];
 
@@ -179,20 +153,33 @@ const NavigationPage = () => {
           inlineCollapsed={collapsed}
           defaultOpenKeys={['sub1']}
           mode="inline"
+          onSelect={({ key }) => handleMenuItemClick(key)}
         >
-          {items.map((group) => (
-            <Menu.ItemGroup key={group.key} title={group.label}>
-              {group.children.map((item) => (
-                <Menu.Item
-                  key={item.key}
-                  icon={item.icon}
-                  onClick={() => handleMenuItemClick(item.label, item.onClick)}
-                >
-                  <span>{item.label}</span>
-                </Menu.Item>
-              ))}
-            </Menu.ItemGroup>
-          ))}
+          {menuItems.map((menuItem) =>
+            menuItem.children ? (
+              <SubMenu 
+                key={menuItem.key} 
+                icon={menuItem.icon} 
+                title={menuItem.label}>
+                {menuItem.children.map((childItem) => (
+                  <Menu.Item
+                    key={childItem.key}
+                    onClick={() => handleMenuItemClick(childItem.key, childItem.onClick)}
+                  >
+                    <span>{childItem.label}</span>
+                  </Menu.Item>
+                ))}
+              </SubMenu>
+            ) : (
+              <Menu.Item
+                key={menuItem.key}
+                icon={menuItem.icon}
+                onClick={() => handleMenuItemClick(menuItem.key, menuItem.onClick)}
+              >
+                <span>{menuItem.label}</span>
+              </Menu.Item>
+            )
+          )}
         </Menu>
       </Sider>
       <Layout>
@@ -223,10 +210,8 @@ const NavigationPage = () => {
             minHeight: 280,
           }}
         >
-          {items.map((group) =>
-            group.children.map((item) =>
-              item.label === selectedMenuItem ? <item.component key={item.key} /> : null
-            )
+          {menuItems.map((menuItem) =>
+            menuItem.key === selectedMenuItemKey ? menuItem.component : null
           )}
         </Content>
       </Layout>
