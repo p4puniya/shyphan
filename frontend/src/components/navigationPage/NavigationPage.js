@@ -13,6 +13,7 @@ import {
   LogoutOutlined,
 } from '@ant-design/icons';
 import { Button, Layout, Menu, theme, Switch } from 'antd';
+import { Navigate } from 'react-router-dom'; // Import Redirect from react-router-dom
 //Importing Pages
 import Dashboard from '../dashboard/Dashboard';
 import StaffManager from '../userManagement/StaffManager';
@@ -29,6 +30,7 @@ const NavigationPage = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
   const [selectedMenuItem, setSelectedMenuItem] = useState('Dashboard');
+  const [loggedIn, setLoggedIn] = useState(true); // State to manage login status
 
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -36,6 +38,10 @@ const NavigationPage = () => {
 
   const toggleTheme = () => {
     setDarkMode(!darkMode);
+  };
+
+  const handleLogout = () => {
+    setLoggedIn(false); // Update login status to false
   };
 
   const items = [
@@ -116,6 +122,7 @@ const NavigationPage = () => {
           key: '9',
           icon: <LogoutOutlined />,
           label: 'Logout',
+          onClick: handleLogout, // Add onClick handler for Logout
         },
       ],
     },
@@ -137,9 +144,15 @@ const NavigationPage = () => {
     SizeContext: 'large',
   };
 
-  const handleMenuItemClick = (label) => {
+  const handleMenuItemClick = (label, onClick) => {
     setSelectedMenuItem(label); // Set the selected menu item label
+    if (onClick) onClick(); // Call the onClick handler if provided
   };
+
+  if (!loggedIn) {
+    // If not logged in, redirect to login page
+    return <Navigate to="/login" />;
+  }
 
   return (
     <Layout style={layoutStyle}>
@@ -156,7 +169,11 @@ const NavigationPage = () => {
           {items.map((group) => (
             <Menu.ItemGroup key={group.key} title={group.label}>
               {group.children.map((item) => (
-                <Menu.Item key={item.key} icon={item.icon} onClick={() => handleMenuItemClick(item.label)}>
+                <Menu.Item
+                  key={item.key}
+                  icon={item.icon}
+                  onClick={() => handleMenuItemClick(item.label, item.onClick)}
+                >
                   <span>{item.label}</span>
                 </Menu.Item>
               ))}
@@ -170,7 +187,6 @@ const NavigationPage = () => {
             margin: '0px 0px 1px 1px',
             padding: 0,
             background: colorBgContainer,
-            borderRadius: borderRadiusLG,
           }}
         >
           <Button
@@ -179,8 +195,9 @@ const NavigationPage = () => {
             onClick={() => setCollapsed(!collapsed)}
             style={{
               fontSize: '16px',
-              width: 64,
-              height: 64,
+              width: 50,
+              height: 50,
+              margin: '3px',
             }}
           />
           <Switch  checked={darkMode} onChange={toggleTheme} style={{ marginLeft: '1rem' }} />
@@ -191,7 +208,6 @@ const NavigationPage = () => {
             padding: 24,
             minHeight: 280,
             background: colorBgContainer,
-            borderRadius: borderRadiusLG,
           }}
         >
           {items.map((group) =>
