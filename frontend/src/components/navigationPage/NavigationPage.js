@@ -39,7 +39,17 @@ const NavigationPage = () => {
 
   const toggleTheme = () => {
     setDarkMode(!darkMode);
+  }
+  
+  const onClick = ({ key }) => {
+    if (key === '9') { // If Logout option is selected
+      handleLogout();
+    } else {
+      // Handle other menu options if needed
+    }
   };
+
+  
 
   const handleLogout = () => {
     localStorage.removeItem('token'); // Remove token from local storage
@@ -68,6 +78,7 @@ const NavigationPage = () => {
           key: '2.2',
           label: 'Category',
           component: <Properties />,
+
         },
       ],
     },
